@@ -1,0 +1,69 @@
+{% macro author(commit) %}{% if commit.author.github %}@{{ commit.author.github }}{% else %}{{ commit.author.name }}{% endif %}{% endmacro %}
+{% macro credit(commit) %}<sub>{{ commit.hash }} by {{ author(commit) }}</sub>{% endmacro %}
+{% macro subject(commit) %}{% if commit.reverted_by %}<del>{{ commit.subject }}</del>{% else %}{{ commit.subject }}{% endif %}{% endmacro %}
+{% macro scope_prefix(commit) %}{% if commit.scope %}{{ commit.scope }}: {% endif %}{% endmacro %}
+{% macro type_prefix(commit) %}{% if commit.kind %}{{ commit.kind }}{% if commit.scope %}({{ commit.scope }}){% endif %}: {% endif %}{% endmacro %}
+{% macro bullet(commit, prefix) %}
+{% set summary = prefix ~ "<strong>" ~ subject(commit) ~ "</strong>&nbsp;&nbsp;" ~ credit(commit) %}
+{% if commit.body or commit.footers %}
+- <details><summary>{{ summary }}</summary>
+
+{% if commit.body %}
+  {{ commit.body | indent(2) }}
+
+{% endif %}
+{% for footer in commit.footers %}
+  - **{{ footer.key }}:** {{ footer.value }}
+{% endfor %}
+{% if commit.footers %}
+
+{% endif %}
+  </details>
+{% else %}
+- {{ summary }}
+{% endif %}
+{% endmacro %}
+{% if sections.breaking %}
+## ⚠️ Breaking changes
+
+{% for commit in sections.breaking %}
+### {{ scope_prefix(commit) }}{{ subject(commit) }}
+
+{{ credit(commit) }}
+
+{% if commit.body %}
+{{ commit.body }}
+
+{% endif %}
+{% for footer in commit.footers %}
+- **{{ footer.key }}:** {{ footer.value }}
+{% endfor %}
+{% if commit.footers %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% for section in [
+  ["Features", sections.features],
+  ["Fixes", sections.fixes],
+  ["Performance", sections.performance],
+] %}
+{% if section[1] %}
+## {{ section[0] }}
+
+{% for commit in section[1] %}
+{{ bullet(commit, scope_prefix(commit)) }}
+{%- endfor %}
+
+{% endif %}
+{% endfor %}
+{% if sections.maintenance %}
+<details>
+<summary><h2>Maintenance</h2></summary>
+
+{% for commit in sections.maintenance %}
+{{ bullet(commit, type_prefix(commit)) }}
+{%- endfor %}
+
+</details>
+{% endif %}

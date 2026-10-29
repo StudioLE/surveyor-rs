@@ -1,0 +1,9 @@
+---
+source: crates/surveyor/src/commands/version/version_handler.rs
+expression: output
+---
+change=major
+channel=alpha
+stage=prerelease
+tagged=false
+version=2.0.0-alpha.1

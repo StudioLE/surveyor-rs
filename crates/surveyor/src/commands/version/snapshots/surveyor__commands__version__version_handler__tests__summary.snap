@@ -1,0 +1,12 @@
+---
+source: crates/surveyor/src/commands/version/version_handler.rs
+expression: summary
+---
+| Version | Stage | Channel | Change | Tagged |
+| --- | --- | --- | --- | --- |
+| `2.0.0-alpha.1` | prerelease | alpha | major | false |
+
+| Crate | Version | Bumped |
+| --- | --- | --- |
+| `alpha` | `2.0.0-alpha.1` | ✅ |
+| `beta` | `2.0.0-alpha.1` | ✅ |

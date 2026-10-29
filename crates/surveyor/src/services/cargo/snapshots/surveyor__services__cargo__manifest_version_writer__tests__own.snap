@@ -1,0 +1,17 @@
+---
+source: crates/surveyor/src/services/cargo/manifest_version_writer.rs
+expression: "own.expect(\"own should be written\")"
+---
+[package]
+name = "own"
+version = "1.1.0" # kept
+
+[dependencies]
+inherit = { workspace = true }
+
+[dev-dependencies.path-only]
+path = "../path-only"
+version = "1.2.0-DEV"
+
+[target.'cfg(unix)'.dependencies]
+inherit = { path = "../inherit", version = "1.2.0-DEV" }

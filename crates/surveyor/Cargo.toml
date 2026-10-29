@@ -1,0 +1,46 @@
+[package]
+name = "studiole-surveyor"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Version a Cargo repo from git tags and conventional commits, and render release notes"
+readme = "../../README.md"
+
+[lib]
+name = "surveyor"
+
+[[bin]]
+name = "surveyor"
+path = "src/main.rs"
+
+[dependencies]
+git-conventional = { workspace = true }
+globset = { workspace = true }
+minijinja = { workspace = true }
+regex = { workspace = true }
+semver = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+strum = { workspace = true }
+studiole-di = { workspace = true }
+studiole-logging = { workspace = true }
+studiole-report = { workspace = true }
+thiserror = { workspace = true }
+toml = { workspace = true }
+toml_edit = { workspace = true }
+tracing = { workspace = true }
+usage-rs = { workspace = true }
+
+[dev-dependencies]
+insta = { workspace = true }
+studiole-surveyor = { workspace = true, features = ["testing"] }
+tempfile = { workspace = true }
+usage-rs = { workspace = true, features = ["test"] }
+
+[features]
+testing = []
+
+[lints]
+workspace = true

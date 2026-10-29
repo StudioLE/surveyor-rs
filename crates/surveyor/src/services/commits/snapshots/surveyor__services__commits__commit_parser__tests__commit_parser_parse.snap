@@ -1,0 +1,23 @@
+---
+source: crates/surveyor/src/services/commits/commit_parser.rs
+expression: commit
+---
+hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+author:
+  name: Ada Lovelace
+  email: ada@example.com
+  github: ~
+conventional: true
+kind: feat
+scope: cli
+subject: add flag
+body: Explains why.
+footers:
+  - key: Refs
+    value: "#12"
+  - key: Closes
+    value: "#13"
+breaking: false
+breaking_description: ~
+change: minor
+reverted_by: ~

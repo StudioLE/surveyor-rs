@@ -1,0 +1,7 @@
+---
+source: crates/surveyor/src/services/notes/notes_renderer.rs
+expression: notes
+---
+## Fixes
+
+- <strong>mend parser</strong>&nbsp;&nbsp;<sub>aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1 by Ada Lovelace</sub>

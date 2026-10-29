@@ -1,0 +1,19 @@
+---
+source: crates/surveyor/src/services/commits/commit_parser.rs
+expression: commit
+---
+hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+author:
+  name: Ada Lovelace
+  email: ada@example.com
+  github: ~
+conventional: false
+kind: ~
+scope: ~
+subject: Update readme
+body: More words.
+footers: []
+breaking: false
+breaking_description: ~
+change: none
+reverted_by: ~

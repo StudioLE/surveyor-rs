@@ -1,0 +1,8 @@
+---
+source: crates/surveyor/src/commands/version/version_handler.rs
+expression: output
+---
+change=major
+stage=development
+tagged=false
+version=2.0.0-DEV+abcdef1

@@ -1,0 +1,16 @@
+---
+source: crates/surveyor/src/services/cargo/manifest_version_writer.rs
+expression: root
+---
+[workspace]
+members = ["crates/*"]
+
+[workspace.package]
+# Set by CI
+version = "1.2.0-DEV+abcdef1"
+
+[workspace.dependencies]
+inherit = { path = "crates/inherit", version = "1.2.0-DEV" } # internal
+own = { version = "1.1.0", path = "crates/own" }
+path-only = { path = "crates/path-only" }
+serde = { version = "1.0.229" }

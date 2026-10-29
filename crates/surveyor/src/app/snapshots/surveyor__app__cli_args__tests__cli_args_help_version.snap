@@ -1,0 +1,15 @@
+---
+source: crates/surveyor/src/app/cli_args.rs
+expression: output
+---
+Determine the version from git tags and commits, and write it into `Cargo.toml`
+and `Cargo.lock`.
+
+Usage: surveyor version [--allow-dirty] [--dry-run]
+
+Flags:
+      --allow-dirty  Continue when the working tree has changes, and mark the
+                     version as dirty.
+      --dry-run      Log what would be written instead of writing manifests,
+                     `Cargo.lock`, and GitHub Actions files.
+  -h, --help         Print help

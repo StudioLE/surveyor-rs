@@ -1,0 +1,57 @@
+---
+source: crates/surveyor/src/services/notes/notes_renderer.rs
+expression: notes
+---
+## ⚠️ Breaking changes
+
+### config: move settings
+
+<sub>aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1 by Ada Lovelace</sub>
+
+Settings now live in `surveyor.toml`.
+
+- **BREAKING CHANGE:** `--settings` is removed
+- **Refs:** #3
+
+## Features
+
+- cli: <strong>add settings flag</strong>&nbsp;&nbsp;<sub>5555555e5555555e5555555e5555555e5555555e by Ada Lovelace</sub>
+- <strong>add notes</strong>&nbsp;&nbsp;<sub>ccccccc3ccccccc3ccccccc3ccccccc3ccccccc3 by @ada</sub>
+- <details><summary>cli: <strong>add flag</strong>&nbsp;&nbsp;<sub>bbbbbbb2bbbbbbb2bbbbbbb2bbbbbbb2bbbbbbb2 by Ada Lovelace</sub></summary>
+
+  First line.
+
+  Second paragraph.
+
+  - **Closes:** #12
+
+  </details>
+
+## Fixes
+
+- <strong><del>mend parser</del></strong>&nbsp;&nbsp;<sub>ddddddd4ddddddd4ddddddd4ddddddd4ddddddd4 by Ada Lovelace</sub>
+
+## Performance
+
+- git: <strong>batch log calls</strong>&nbsp;&nbsp;<sub>fffffff6fffffff6fffffff6fffffff6fffffff6 by Ada Lovelace</sub>
+
+<details>
+<summary><h2>Maintenance</h2></summary>
+
+- <details><summary><strong><del>Revert "feat(cli): add settings flag"</del></strong>&nbsp;&nbsp;<sub>6666666f6666666f6666666f6666666f6666666f by Ada Lovelace</sub></summary>
+
+  This reverts commit 5555555e5555555e5555555e5555555e5555555e.
+
+  </details>
+- revert: <strong>undo 6666666</strong>&nbsp;&nbsp;<sub>7777777a7777777a7777777a7777777a7777777a by Ada Lovelace</sub>
+- <details><summary><strong>Revert "fix: mend parser"</strong>&nbsp;&nbsp;<sub>eeeeeee5eeeeeee5eeeeeee5eeeeeee5eeeeeee5 by Ada Lovelace</sub></summary>
+
+  This reverts commit ddddddd4ddddddd4ddddddd4ddddddd4ddddddd4.
+
+  </details>
+- docs: <strong>explain channels</strong>&nbsp;&nbsp;<sub>4444444d4444444d4444444d4444444d4444444d by Ada Lovelace</sub>
+- ci: <strong>cache builds</strong>&nbsp;&nbsp;<sub>2222222b2222222b2222222b2222222b2222222b by Ada Lovelace</sub>
+- <strong>Update readme</strong>&nbsp;&nbsp;<sub>3333333c3333333c3333333c3333333c3333333c by Ada Lovelace</sub>
+- chore(deps): <strong>bump serde</strong>&nbsp;&nbsp;<sub>1111111a1111111a1111111a1111111a1111111a by Ada Lovelace</sub>
+
+</details>

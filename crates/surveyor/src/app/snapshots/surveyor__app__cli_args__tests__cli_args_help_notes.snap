@@ -1,0 +1,10 @@
+---
+source: crates/surveyor/src/app/cli_args.rs
+expression: output
+---
+Render release notes for the commits since the last release.
+
+Usage: surveyor notes
+
+Flags:
+  -h, --help  Print help

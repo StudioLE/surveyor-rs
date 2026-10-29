@@ -1,0 +1,114 @@
+---
+source: crates/surveyor/src/services/notes/sections_context.rs
+expression: sections
+---
+breaking:
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: fix
+    scope: ~
+    subject: drop flag
+    body: ~
+    footers: []
+    breaking: true
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+features:
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: feat
+    scope: ~
+    subject: add flag
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+fixes:
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: fix
+    scope: ~
+    subject: mend parser
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+performance:
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: perf
+    scope: ~
+    subject: cache tags
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+maintenance:
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: false
+    kind: ~
+    scope: ~
+    subject: not conventional
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: docs
+    scope: ~
+    subject: explain flag
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~
+  - hash: aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1aaaaaaa1
+    author:
+      name: Ada Lovelace
+      email: ada@example.com
+      github: ~
+    conventional: true
+    kind: chore
+    scope: ~
+    subject: bump deps
+    body: ~
+    footers: []
+    breaking: false
+    breaking_description: ~
+    change: minor
+    reverted_by: ~

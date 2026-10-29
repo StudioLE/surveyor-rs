@@ -1,0 +1,7 @@
+---
+source: crates/surveyor/src/commands/version/version_summary_renderer.rs
+expression: summary
+---
+| Version | Stage | Channel | Change | Tagged |
+| --- | --- | --- | --- | --- |
+| `2.0.0` | release | release | major | false |

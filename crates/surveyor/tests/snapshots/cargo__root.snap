@@ -1,0 +1,15 @@
+---
+source: crates/surveyor/tests/cargo.rs
+expression: "read(\"Cargo.toml\")"
+---
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+# Set by CI
+version = "1.2.0-alpha.3"
+edition = "2024"
+
+[workspace.dependencies]
+alpha = { path = "crates/alpha", version = "1.2.0-alpha.3" } # internal

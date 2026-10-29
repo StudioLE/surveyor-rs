@@ -1,0 +1,8 @@
+---
+source: crates/surveyor/src/services/cargo/crate_summary_renderer.rs
+expression: summary
+---
+| Crate | Version | Bumped |
+| --- | --- | --- |
+| `alpha` | `2.0.0` | ✅ |
+| `beta` | `1.0.0` | ➖ |
