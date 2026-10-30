@@ -1,6 +1,7 @@
 //! Cargo workspace reading, and manifest and lock file writing.
 
 mod cargo_adapter;
+mod cargo_outputs;
 mod cargo_versioner;
 mod crate_summary_renderer;
 mod crate_version;
@@ -29,6 +30,7 @@ mod write_manifest;
 mod write_manifest_spy;
 
 pub use cargo_adapter::*;
+pub use cargo_outputs::*;
 pub use cargo_versioner::*;
 pub use crate_summary_renderer::*;
 pub use crate_version::*;

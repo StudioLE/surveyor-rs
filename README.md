@@ -91,15 +91,16 @@ If `Cargo.lock` exists, Surveyor updates each workspace crate's version in it to
 
 If `GITHUB_OUTPUT` is set, `surveyor version` appends these:
 
-| Output    | Value                                                          |
-|-----------|----------------------------------------------------------------|
-| `version` | Version written to the manifests                               |
-| `stage`   | `release`, `prerelease`, or `development`                      |
-| `channel` | Channel name, omitted for development builds                   |
-| `change`  | `major`, `minor`, `patch`, or `none`                           |
-| `tagged`  | `true` if the version is already a tag on `HEAD`, else `false` |
+| Output               | Value                                                                    |
+|----------------------|--------------------------------------------------------------------------|
+| `version`            | Version written to the manifests                                         |
+| `stage`              | `release`, `prerelease`, or `development`                                |
+| `channel`            | Channel name, omitted for development builds                             |
+| `change`             | `major`, `minor`, `patch`, or `none`                                     |
+| `tagged`             | `true` if the version is already a tag on `HEAD`, else `false`           |
+| `cargo_publish_args` | `-p` flag for each bumped crate that can be published, empty if none     |
 
-If `GITHUB_STEP_SUMMARY` is set, it appends a table of these outputs, then a table of every crate's version. The outputs and the first table are written before the Cargo files are edited, so a failed edit still shows the version.
+If `GITHUB_STEP_SUMMARY` is set, it appends a table of these outputs, then a table of every crate's version. Every output except `cargo_publish_args`, and the first table, are written before the Cargo files are edited, so a failed edit still shows the version. `cargo_publish_args` and the crate table are written after, so a failed edit publishes nothing.
 
 > [!TIP]
 > A run with only `chore` commits still bumps the patch, but reports `change=none`. Skip releasing those with:
@@ -114,6 +115,17 @@ If `GITHUB_STEP_SUMMARY` is set, it appends a table of these outputs, then a tab
 > ```yaml
 > if: steps.version.outputs.tagged != 'true'
 > ```
+
+> [!TIP]
+> Publish only the crates that changed, in dependency order, with:
+>
+> ```yaml
+> - name: Publish
+>   if: steps.version.outputs.cargo_publish_args != '' && steps.version.outputs.tagged != 'true'
+>   run: cargo publish --locked ${{ steps.version.outputs.cargo_publish_args }}
+> ```
+>
+> Publishing several crates at once needs Cargo 1.90 or later.
 
 ## Notes
 

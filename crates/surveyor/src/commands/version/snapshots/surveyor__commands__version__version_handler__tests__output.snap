@@ -7,3 +7,4 @@ channel=alpha
 stage=prerelease
 tagged=false
 version=2.0.0-alpha.1
+cargo_publish_args=-p alpha

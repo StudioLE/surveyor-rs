@@ -9,14 +9,17 @@ pub struct CargoVersioner {
     crate_versions: Arc<CrateVersionEvaluator>,
     manifests: Arc<ManifestVersionWriter>,
     lock: Arc<LockVersionWriter>,
+    serializer: Arc<GitHubOutputSerializer>,
     tables: Arc<CrateSummaryRenderer>,
+    output: Arc<dyn WriteOutput>,
     summary: Arc<dyn WriteSummary>,
 }
 
 impl CargoVersioner {
-    /// Select each crate's version, write them into `Cargo.toml` and `Cargo.lock`, and append them to the step summary.
+    /// Select each crate's version, write them into `Cargo.toml` and `Cargo.lock`, then append the outputs and step summary.
     ///
     /// - Logs a warning for each publishable crate with a path-only internal dependency
+    /// - Appends the outputs only if `GITHUB_OUTPUT` is set
     /// - Appends the step summary only if `GITHUB_STEP_SUMMARY` is set
     /// - Logs instead of writing any file if `dry_run`
     pub fn version(
@@ -39,11 +42,21 @@ impl CargoVersioner {
         self.lock
             .write(&workspace, &crates, dry_run)
             .change_context(CargoVersionerError::Lock)?;
+        let outputs = self
+            .serializer
+            .serialize(&CargoOutputs::from(crates.as_slice()))
+            .change_context(CargoVersionerError::Output)?;
         let summary = self.tables.render(&crates);
         if dry_run {
-            info!(summary, "Skipping crate step summary for dry run");
+            info!(
+                outputs,
+                summary, "Skipping crate outputs and step summary for dry run"
+            );
             return Ok(());
         }
+        self.output
+            .write_output(&outputs)
+            .change_context(CargoVersionerError::Output)?;
         self.summary
             .write_summary(&summary)
             .change_context(CargoVersionerError::Summary)
@@ -78,6 +91,9 @@ pub enum CargoVersionerError {
     /// Unable to write `Cargo.lock`.
     #[error("Unable to write the versions into the lock file")]
     Lock,
+    /// Unable to write the step outputs.
+    #[error("Unable to write the crate GitHub Actions outputs")]
+    Output,
     /// Unable to write the step summary.
     #[error("Unable to write the crate versions to the step summary")]
     Summary,
@@ -87,7 +103,7 @@ pub enum CargoVersionerError {
 mod tests {
     use super::*;
 
-    /// [`CargoVersioner::version`] writes manifests, `Cargo.lock`, and the crate step summary.
+    /// [`CargoVersioner::version`] writes manifests, `Cargo.lock`, the outputs, and the crate step summary.
     ///
     /// - Writes only `beta`, as `alpha` inherits the version from a root with no `[workspace]`
     #[test]
@@ -117,8 +133,35 @@ mod tests {
             lock.contains("name = \"beta\"\nversion = \"2.0.0-alpha.1\""),
             "{lock}"
         );
+        let outputs = services.expect::<WriteOutputSpy>().get_outputs();
+        assert_eq!(outputs, ["cargo_publish_args=-p alpha\n"]);
         let summaries = services.expect::<WriteSummarySpy>().get_summaries();
         assert_eq!(summaries.len(), 1);
+    }
+
+    /// [`CargoVersioner::version`] writes empty publish flags if no crate can be published.
+    #[test]
+    fn cargo_versioner_version_none() {
+        // Arrange
+        let workspace = Workspace {
+            members: vec![WorkspaceMember {
+                publish: false,
+                ..WorkspaceMember::fixture()
+            }],
+            ..Workspace::fixture()
+        };
+        let services = ServiceBuilder::new()
+            .with_test_services()
+            .with_instance(GetWorkspaceStub { workspace })
+            .build();
+        let versioner = services.expect::<CargoVersioner>();
+        // Act
+        versioner
+            .version(&RepoVersion::fixture(), false)
+            .expect("should version");
+        // Assert
+        let outputs = services.expect::<WriteOutputSpy>().get_outputs();
+        assert_eq!(outputs, ["cargo_publish_args=\n"]);
     }
 
     /// [`CargoVersioner::version`] writes nothing on a dry run.
@@ -134,9 +177,11 @@ mod tests {
         // Assert
         let manifests = services.expect::<WriteManifestSpy>().get_manifests();
         let locks = services.expect::<WriteLockSpy>().get_locks();
+        let outputs = services.expect::<WriteOutputSpy>().get_outputs();
         let summaries = services.expect::<WriteSummarySpy>().get_summaries();
         assert_eq!(manifests, BTreeMap::new());
         assert_eq!(locks, BTreeMap::new());
+        assert_eq!(outputs, Vec::<String>::new());
         assert_eq!(summaries, Vec::<String>::new());
     }
 }
