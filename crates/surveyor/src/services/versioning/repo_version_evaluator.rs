@@ -159,13 +159,15 @@ fn get_release_as(
 /// Bump `base` by `change`, skipping full releases already tagged on other commits.
 ///
 /// - Treats [`Change::None`] as [`Change::Patch`]
-/// - Treats [`Change::Major`] as [`Change::Minor`] below `1.0.0`
+/// - Bumps any change as [`Change::Minor`] below `0.1.0`, so the first version is `0.1.0`
+/// - Shifts each change down one position below `1.0.0`
 fn bump(base: &Version, change: Change, tags: &[Version]) -> Version {
     let change = change.max(Change::Patch);
-    let position = if base.major == 0 && change == Change::Major {
-        Change::Minor
-    } else {
-        change
+    let position = match (base.major, base.minor) {
+        (0, 0) => Change::Minor,
+        (0, _) if change == Change::Major => Change::Minor,
+        (0, _) => Change::Patch,
+        _ => change,
     };
     let mut target = increment(base, position);
     while tags
@@ -754,7 +756,7 @@ mod tests {
         );
     }
 
-    /// [`bump`] bumps a major change as a minor below `1.0.0`.
+    /// [`bump`] shifts each change down one position below `1.0.0`, and goes to `0.1.0` from `0.0.x`.
     #[test]
     fn bump_below_one() {
         // Arrange
@@ -764,11 +766,12 @@ mod tests {
             (Version::new(1, 2, 3), Change::Patch, Version::new(1, 2, 4)),
             (Version::new(1, 2, 3), Change::None, Version::new(1, 2, 4)),
             (Version::new(0, 2, 3), Change::Major, Version::new(0, 3, 0)),
-            (Version::new(0, 2, 3), Change::Minor, Version::new(0, 3, 0)),
+            (Version::new(0, 2, 3), Change::Minor, Version::new(0, 2, 4)),
             (Version::new(0, 2, 3), Change::Patch, Version::new(0, 2, 4)),
             (Version::new(0, 0, 3), Change::Major, Version::new(0, 1, 0)),
             (Version::new(0, 0, 3), Change::Minor, Version::new(0, 1, 0)),
-            (Version::new(0, 0, 3), Change::Patch, Version::new(0, 0, 4)),
+            (Version::new(0, 0, 3), Change::Patch, Version::new(0, 1, 0)),
+            (Version::new(0, 0, 0), Change::None, Version::new(0, 1, 0)),
         ];
         for (base, change, expected) in cases {
             // Act

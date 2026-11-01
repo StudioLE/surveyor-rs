@@ -39,13 +39,18 @@ Surveyor finds the previous release tag, reads the commits since, and increments
 | `feat: …`              | `1.3.0`      | `1.3.0-alpha.1` | `1.3.0-DEV+abcdef1` |
 | `feat!: …`             | `2.0.0`      | `2.0.0-alpha.1` | `2.0.0-DEV+abcdef1` |
 
-The previous release is the newest `v` tag reachable from `HEAD` with no pre-release suffix, so `v1.2.0` counts and `v1.2.0-alpha.1` doesn't. With no release tag, Surveyor starts from `0.0.0`.
+The previous release is the newest `v` tag reachable from `HEAD` with no pre-release suffix, so `v1.2.0` counts and `v1.2.0-alpha.1` doesn't. With no release tag, or a `0.0.x` one, the next version is `0.1.0`. This skips `0.0.x`, where Cargo treats every release as breaking.
 
 The biggest change across the commits wins, ignoring merge commits:
 
-- A breaking change, marked by `!` or a `BREAKING CHANGE` footer, bumps `1.2.3` to `2.0.0`, or `0.2.3` to `0.3.0` before `1.0.0`
+- A breaking change, marked by `!` or a `BREAKING CHANGE` footer, bumps `1.2.3` to `2.0.0`
 - `feat` bumps `1.2.3` to `1.3.0`
 - Any other commit bumps `1.2.3` to `1.2.4`, including `chore`, so every build gets a new version
+
+Before `1.0.0`, each change bumps one place lower, following [Cargo's SemVer conventions](https://doc.rust-lang.org/cargo/reference/semver.html):
+
+- A breaking change bumps `0.2.3` to `0.3.0`
+- Any other commit bumps `0.2.3` to `0.2.4`
 
 The branch decides the format:
 
